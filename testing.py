@@ -28,16 +28,35 @@ Hello1 = """ <article-categories>
 """
 
 import glob, os
+import errno
+import sys
 import xml.dom.minidom
 dom = xml.dom.minidom.parseString(hello)
 
 
 #path_elife_articles_folder = os.path.dirname(os.path.abspath("elife_articles_master"))    # path to the folder containing the MGB output files. The folder is in the current directory 
 
+# for root,dirs,files in os.walk("elife_articles_master"):
+#     for file in files:
+#       if file.endswith('.xml'):
+#         print file
+
+
 for root,dirs,files in os.walk("elife_articles_master"):
-    for file in files:
-      if file.endswith('.xml'):
-        print file
+    for name in files:
+      if name.endswith('.xml'):
+        try:
+          with open(name) as f:
+            sys.stdout.write(f.read())
+            for line in f:
+              print line 
+        except IOError as exc:
+          if exc.errno != errno.EISDIR:
+            raise 
+
+          # f = open(file, 'r')
+          # f.readlines()
+          # f.close
 
 
 # or because the elife_articles_master is in the working directory, I can simply put 
