@@ -1,4 +1,3 @@
-
 hello = """ <article-categories>
          <subj-group subj-group-type="display-channel">
            <subject>Research article</subject>
