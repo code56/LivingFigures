@@ -63,9 +63,9 @@ def main():
   read_xml = read_all_xml_files()
 
   foo = dom.getElementsByTagName("subject")
-  #text = handleTok(foo)
+  text = handleTok(foo)
 
-  #print text
+  print text
   print "foo is ", foo
 
 def read_all_xml_files1():
