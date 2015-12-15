@@ -1,37 +1,9 @@
-hello = """ <article-categories>
-         <subj-group subj-group-type="display-channel">
-           <subject>Research article</subject>
-         </subj-group>
-         <subj-group subj-group-type="heading">
-           <subject>Immunology</subject>
-         </subj-group>
-         <subj-group subj-group-type="heading">
-           <subject>Microbiology and infectious disease</subject>
-         </subj-group>
-         <subj-group subj-group-type="heading">
-           <subject>Microbiology and infectious disease</subject>
-         </subj-group>
-       </article-categories> 
-"""
-
-Hello1 = """ <article-categories>
-         <subj-group subj-group-type="display-channel">
-           <subject>Research article</subject>
-         </subj-group>
-         <subj-group subj-group-type="heading">
-           <subject>Immunology</subject>
-         </subj-group>
-         <subj-group subj-group-type="heading">
-           <subject>Microbiology and infectious disease</subject>
-         </subj-group>
-       </article-categories> 
-"""
-
 import glob, os
 import errno
 import sys
 import xml.dom.minidom
-dom = xml.dom.minidom.parseString(hello)
+
+
 
 
 
@@ -59,34 +31,35 @@ dom = xml.dom.minidom.parseString(hello)
 def main():
 
 
-#  path_elife_articles_folder = os.path.dirname(os.path.abspath("elife_articles_master"))    # path to the folder containing the MGB output files. The folder is in the current directory 
-  read_xml = read_all_xml_files()
+#  path_elife_articles_folder = os.path.dirname(os.path.abspath("elife_articles_master"))    
+# path to the folder containing the MGB output files. The folder is in the current directory 
 
-  foo = dom.getElementsByTagName("subject")
-  text = handleTok(foo)
+#read_xml = read_all_xml_files()
+  
+  # foo = dom.getElementsByTagName("subject")
+  # text = handleTok(foo)
 
-  print text
-  print "foo is ", foo
+  # print text
+  # print "foo is ", foo
 
-def read_all_xml_files1():
-  for root,dirs,files in os.walk("elife_articles_master"):
-      for file in files:
-        if file.endswith(".xml"):
-          f = open(file, 'r')
-          f.readlines()
-          f.close
-        else: continue
 
 # iterate (and read) all xml files in a directory 
-def read_all_xml_files():
+
   path = 'elife_articles_master'
+  
 
   for infile in glob.glob(os.path.join(path, '*.xml')):
     print "current file is: " + infile
     f = open(infile, 'r')
-    #read_the_file = f.readlines()
-    #print read_the_file 
+      #read_the_file = f.readlines()
+      #print read_the_file 
+    dom = xml.dom.minidom.parse(f)
+    foo = dom.getElementsByTagName("subject")
+    text = handleTok(foo)
 
+
+    print text
+    print "foo is ", foo
     f.close
 
 
@@ -102,7 +75,6 @@ def read_all_xml_files():
   #     infile = open(infilename, 'r')
   #     print infile
   #     outfile = open(os.path.join(folder, '{}_edit.{}'.format(base, extension)), 'w')
-
 
 
   # or because the elife_articles_master is in the working directory, I can simply put 
@@ -133,21 +105,21 @@ def read_all_xml_files():
 
   # inputstring_mgb = path_mgb_folder + "/" + mgb_folder + "/" + mgb_folder
 
-
 def getText(nodelist):
   rc = ""
   dict_cat = {}
   for node in nodelist:
     if node.nodeType == node.TEXT_NODE:
-            #rc.append(node.data)
+             #rc.append(node.data)
       rc = node.data 
       if not rc in dict_cat:
         dict_cat[rc] = 1
       else:
         dict_cat[rc] = +1
-     #return ''.join(rc)
+       #return ''.join(rc)
     print "dict of categories is", dict_cat 
     return dict_cat 
+
 
 def handleTok(tokenlist):
   texts = ""
@@ -161,3 +133,5 @@ def handleTok(tokenlist):
 
 if __name__ == "__main__":
   main()
+
+
