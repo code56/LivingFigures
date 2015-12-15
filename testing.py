@@ -4,10 +4,6 @@ import sys
 import xml.dom.minidom
 
 
-
-
-
-
 # for root,dirs,files in os.walk("elife_articles_master"):
 #     for name in files:
 #       if name.endswith('.xml'):
