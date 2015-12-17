@@ -2,7 +2,7 @@ import glob, os
 import errno
 import sys
 import xml.dom.minidom
-
+from collections import Counter 
 
 # for root,dirs,files in os.walk("elife_articles_master"):
 #     for name in files:
@@ -19,13 +19,10 @@ import xml.dom.minidom
           # f = open(file, 'r')
           # f.readlines()
           # f.close
-
-
 # os.listdir() to list all files in a directory - returns just the filenames, not the full path
 # os.path module - gives tools to construct filenames as needed 
 
 def main():
-
 
 #  path_elife_articles_folder = os.path.dirname(os.path.abspath("elife_articles_master"))    
 # path to the folder containing the MGB output files. The folder is in the current directory 
@@ -38,56 +35,73 @@ def main():
   # print text
   # print "foo is ", foo
 
-
 # iterate (and read) all xml files in a directory 
-
   path = 'elife_articles_master'
-  
-
+  article_categories_dict = {}
+  rc = "" 
+  texts = ""
+  ok = ""
   for infile in glob.glob(os.path.join(path, '*.xml')):
-    print "current file is: " + infile
     f = open(infile, 'r')
       #read_the_file = f.readlines()
       #print read_the_file 
+    print f 
     dom = xml.dom.minidom.parse(f)
-    foo = dom.getElementsByTagName("subject")
-    text = handleTok(foo)
+    
+    ok = dom.getElementsByTagName("subject")[0].firstChild.nodeValue
 
+    decode = ok.decode('unicode_escape').encode('ascii', 'ignore')
+    print "decode ", decode 
 
-    print text
-    print "foo is ", foo
-    f.close
+    for decode, value in article_categories_dict.iteritems():
 
-
-
-
-def getText(nodelist):
-  rc = ""
-  dict_cat = {}
-  for node in nodelist:
-    if node.nodeType == node.TEXT_NODE:
-             #rc.append(node.data)
-      rc = node.data 
-      if not rc in dict_cat:
-        dict_cat[rc] = 1
+      if decode in article_categories_dict:
+        article_categories_dict[decode]=+1
       else:
-        dict_cat[rc] = +1
-       #return ''.join(rc)
-    print "dict of categories is", dict_cat 
-    return dict_cat 
+        article_categories_dict[decode]=1 
+      #f.close
+
+    print article_categories_dict
 
 
-def handleTok(tokenlist):
-  texts = ""
-  for token in tokenlist:
-    texts = getText(token.childNodes)
-    print "the texts are", texts
-  return texts
+    # for elem in elems:
+    #   print "element", elem.firstValue.nodeValue 
+
+
+    # foo = dom.getElementsByTagName("subject")
+    
+    # for node in nodelist:
+    #   if node.nodeType == node.TEXT_NODE:
+    #     rc = node.data
+    #     print "rc is,", rc
 
 
 
+    # text = handleTok(foo)
 
-if __name__ == "__main__":
-  main()
+    # print "text from outside function ," , text 
+    # print "foo is ", foo
 
 
+# def getText(nodelist):
+#   rc = ""
+#   dict_cat = {}
+#   for node in nodelist:
+#     if node.nodeType == node.TEXT_NODE:
+#              #rc.append(node.data)
+#       rc = node.data 
+#       # if not rc in dict_cat:
+#       #   dict_cat[rc] = 1
+#       # else:
+#       #   dict_cat[rc] = +1
+#   return ''.join(rc)
+#     #print "dict of categories is", dict_cat 
+#     #return rc 
+
+
+# def handleTok(tokenlist):
+#   texts = ""
+#   for token in tokenlist:
+#     texts = getText(token.childNodes)
+#     print "the texts are", texts
+#   return texts
