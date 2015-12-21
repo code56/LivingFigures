@@ -56,7 +56,7 @@ def main():
     for decode, value in article_categories_dict.iteritems():
 
       if decode in article_categories_dict:
-        article_categories_dict[decode]=+1
+        article_categories_dict[decode] += 1
       else:
         article_categories_dict[decode]=1 
       #f.close
